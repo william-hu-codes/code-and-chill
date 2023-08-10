@@ -3,11 +3,7 @@ const Fluid = require('../models/fluid')
 module.exports = {
     index,
     new: addFluid,
-    create,
-    test,
-    test2,
-    test3,
-    test4
+    create
 }
 
 async function index (req, res, next) {
@@ -41,20 +37,4 @@ async function create(req, res, next) {
         console.log(err)
         next(Error(err))
     }
-}
-
-function test (req, res) {
-    console.log("test")
-}
-
-function test2 (req, res) {
-    console.log("test2")
-}
-
-function test4 (req, res, next) {
-    console.log("test4")
-}
-
-function test3 (req, res, next) {
-    console.log("test3")
 }
