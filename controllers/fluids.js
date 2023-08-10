@@ -38,3 +38,7 @@ async function create(req, res, next) {
         next(Error(err))
     }
 }
+
+function test2 (req, res, next) {
+    console.log("test2")
+}
