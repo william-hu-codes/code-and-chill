@@ -68,7 +68,8 @@ async function update(req, res, next) {
         await originalData.updateOne({phos: newData.phos})
         await originalData.save()
         // res.send(newData)
-        res.redirect(`/fluids/${req.params.id}`)
+        // res.redirect(`/fluids/${req.params.id}`)
+        res.redirect(`/fluids/`)
     }catch(err) {
         console.log(err)
         next(Error(err))
