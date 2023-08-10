@@ -3,7 +3,8 @@ const Fluid = require('../models/fluid')
 module.exports = {
     index,
     new: addFluid,
-    create
+    create,
+    delete: deleteFluid
 }
 
 async function index (req, res, next) {
@@ -33,6 +34,22 @@ async function create(req, res, next) {
         newData.phos = newData.phos ? true : false
         await Fluid.create(newData)
         res.redirect("/fluids")
+    }catch(err) {
+        console.log(err)
+        next(Error(err))
+    }
+}
+
+
+async function deleteFluid (req, res) {
+    try {
+
+        console.log("here is what we will delete ", (req.params.id))
+
+        await Fluid.findByIdAndDelete(req.params.id)
+
+        res.redirect('/fluids');
+
     }catch(err) {
         console.log(err)
         next(Error(err))
