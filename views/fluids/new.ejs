@@ -1,0 +1,17 @@
+<%- include("../partials/header") %>
+
+<form action="/fluids" method="POST" id="new-fluid-form">
+    <label>Brand
+        <input type="text" name="brand">
+    </label>
+    <label>Has potassium:
+        <input type="checkbox" name="potassium">
+    </label>
+    <label>Has phosphate:
+        <input type="checkbox" name="phos">
+    </label>
+    <button type="submit">Add Fluid</button>
+</form>
+
+
+<%- include("../partials/footer") %>

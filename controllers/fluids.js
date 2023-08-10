@@ -1,14 +1,17 @@
 const Fluid = require('../models/fluid')
 
 module.exports = {
-    index
+    index,
+    new: addFluid,
+    create
 }
 
 async function index (req, res, next) {
     try {
         const allFluids = await Fluid.find()
         res.render("fluids/index", {
-            allFluids
+            allFluids,
+            title: "Fluids List"
         })
         console.log(allFluids)
 
@@ -18,15 +21,10 @@ async function index (req, res, next) {
     }
 }
 
+function addFluid (req, res, next) {
+    res.render("fluids/new")
+}
 
-// async function index (req, res) {
-
-//     try {
-//         const allFluids = await Fluid.find({})
-//         console.log(allFluids)
-//         res.render("fluids/index", {allFluids})
-//     } catch(err) {
-//         console.log(err)
-//     }
-// }
-
+async function create(req, res, next) {
+    
+}
