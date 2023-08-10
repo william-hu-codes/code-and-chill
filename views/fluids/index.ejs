@@ -7,7 +7,7 @@
       <th>Potassium</th>
       <th>Phosphate</th>
       <th></th>
-      <th> </th>
+      <th></th>
     </tr>
   </thead>
 
@@ -17,6 +17,14 @@
       <td><%= f.brand %></td>
       <td><%= f.potassium %></td>
       <td><%= f.phos %></td>
+      <td><a href="/fluids/<%=f._id%>/edit">EDIT</a></td>
+      <td>
+        <form action="/fluids/<%=f._id%>?_method=DELETE" method="POST">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">Remove Fluid</button>
+        </form>
+     </td>
+
     </tr>
 
     <%})%>

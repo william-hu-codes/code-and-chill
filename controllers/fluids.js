@@ -41,3 +41,53 @@ async function create(req, res, next) {
         next(Error(err))
     }
 }
+
+
+async function edit(req, res, next) {
+    try {
+        const fluidId = req.params.id
+        const fluid = await Fluid.findById(fluidId)
+        console.log(fluid)
+        res.render("fluids/edit", {
+            title: "Update Fluid",
+            fluid
+        })
+    }catch(err) {
+        console.log(err)
+        next(Error(err))
+    }
+}
+
+async function update(req, res, next) {
+    newData = {...req.body}
+    newData.potassium = newData.potassium ? true : false
+    newData.phos = newData.phos ? true : false
+    try {
+        console.log("updating some data")
+        const originalData = await Fluid.findById(req.params.id)
+        await originalData.updateOne({brand: newData.brand})
+        await originalData.updateOne({potassium: newData.potassium})
+        await originalData.updateOne({phos: newData.phos})
+        await originalData.save()
+        // res.send(newData)
+        res.redirect(`/fluids/`)
+    }catch(err) {
+        console.log(err)
+        next(Error(err))
+    }
+}
+
+async function deleteFluid (req, res) {
+    try {
+
+        console.log("here is what we will delete ", (req.params.id))
+
+        await Fluid.findByIdAndDelete(req.params.id)
+
+        res.redirect('/fluids');
+
+    }catch(err) {
+        console.log(err)
+        next(Error(err))
+    }
+}

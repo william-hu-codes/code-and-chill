@@ -1,5 +1,6 @@
 <%- include("../partials/header") %>
 
+<br>
 <form action="/fluids/<%=fluid._id%>/?_method=PUT" method="POST" id="edit-fluid-form">
     <label>Brand
         <input type="text" name="brand" value="<%=fluid.brand%>">
