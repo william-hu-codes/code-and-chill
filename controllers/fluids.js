@@ -40,6 +40,11 @@ async function create(req, res, next) {
     }
 }
 
+<<<<<<< HEAD
 function test (req, res) {
     console.log(test)
+=======
+function test2 (req, res, next) {
+    console.log("test2")
+>>>>>>> 4ff756e3475a5503506a8240ab06f0df61c14848
 }
