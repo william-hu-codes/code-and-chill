@@ -3,7 +3,8 @@ const Fluid = require('../models/fluid')
 module.exports = {
     index,
     new: addFluid,
-    create
+    create,
+    test
 }
 
 async function index (req, res, next) {
@@ -37,4 +38,8 @@ async function create(req, res, next) {
         console.log(err)
         next(Error(err))
     }
+}
+
+function test (req, res) {
+    console.log(test)
 }
