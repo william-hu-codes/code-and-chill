@@ -3,7 +3,9 @@ const Fluid = require('../models/fluid')
 module.exports = {
     index,
     new: addFluid,
-    create
+    create,
+    edit,
+    update
 }
 
 async function index (req, res, next) {
@@ -37,4 +39,39 @@ async function create(req, res, next) {
         console.log(err)
         next(Error(err))
     }
+}
+
+async function edit(req, res, next) {
+    try {
+        const fluidId = req.params.id
+        const fluid = await Fluid.findById(fluidId)
+        console.log(fluid)
+        res.render("fluids/edit", {
+            title: "Update Fluid",
+            fluid
+        })
+    }catch(err) {
+        console.log(err)
+        next(Error(err))
+    }
+}
+
+async function update(req, res, next) {
+    newData = {...req.body}
+    newData.potassium = newData.potassium ? true : false
+    newData.phos = newData.phos ? true : false
+    try {
+        console.log("updating some data")
+        const originalData = await Fluid.findById(req.params.id)
+        await originalData.updateOne({brand: newData.brand})
+        await originalData.updateOne({potassium: newData.potassium})
+        await originalData.updateOne({phos: newData.phos})
+        await originalData.save()
+        // res.send(newData)
+        res.redirect(`/fluids/${req.params.id}`)
+    }catch(err) {
+        console.log(err)
+        next(Error(err))
+    }
+
 }

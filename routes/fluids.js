@@ -11,5 +11,8 @@ router.get("/new", fluidsCtrl.new)
 
 router.post("/", fluidsCtrl.create)
 
+router.get("/:id/edit", fluidsCtrl.edit)
+
+router.put("/:id", fluidsCtrl.update)
 
 module.exports = router;
