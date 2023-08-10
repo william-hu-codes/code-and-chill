@@ -26,5 +26,15 @@ function addFluid (req, res, next) {
 }
 
 async function create(req, res, next) {
-    
+    console.log("creating new data")
+    try {
+        const newData = {...req.body}
+        newData.potassium = newData.potassium ? true : false
+        newData.phos = newData.phos ? true : false
+        await Fluid.create(newData)
+        res.redirect("/fluids")
+    }catch(err) {
+        console.log(err)
+        next(Error(err))
+    }
 }

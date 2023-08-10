@@ -1,4 +1,4 @@
-// /fluids
+// route starts with /fluids
 
 var express = require('express');
 var router = express.Router();
@@ -9,7 +9,7 @@ router.get('/', fluidsCtrl.index)
 
 router.get("/new", fluidsCtrl.new)
 
-router.post("/fluid", fluidsCtrl.create)
+router.post("/", fluidsCtrl.create)
 
 
 module.exports = router;
