@@ -33,6 +33,8 @@ async function addOneFluid (data){
     }catch(err){
         console.log(err)
     }
+    process.exit()
+
 }
 
 async function find () {
@@ -43,10 +45,11 @@ async function find () {
     } catch(err) {
         console.log(err)
     }
+    process.exit()
 }
 
 
-addOneFluid(dataTwo)
-find()
+// addOneFluid(dataTwo)
+// find()
 
 
