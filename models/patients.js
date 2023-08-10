@@ -6,9 +6,8 @@ const PatientSchema = new Schema({
     name: {
         type: String
     },
-    age: {
-        type: Number,
-        min: 0,
+    dob: {
+        type: Date,
     },
     fluid: {
         type: Schema.Types.ObjectId,
