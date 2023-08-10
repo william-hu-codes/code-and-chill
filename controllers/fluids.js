@@ -42,3 +42,7 @@ async function create(req, res, next) {
 function test2 (req, res, next) {
     console.log("test2")
 }
+
+function test4 (req, res, next) {
+    console.log("test4")
+}
