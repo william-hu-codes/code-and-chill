@@ -13,5 +13,8 @@ router.post("/", fluidsCtrl.create)
 
 router.delete('/:id', fluidsCtrl.delete);
 
+router.get("/:id/edit", fluidsCtrl.edit)
+
+router.put("/:id", fluidsCtrl.update)
 
 module.exports = router;

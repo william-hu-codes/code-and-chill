@@ -1,0 +1,24 @@
+<%- include("../partials/header") %>
+
+<form action="/fluids/<%=fluid._id%>/?_method=PUT" method="POST" id="edit-fluid-form">
+    <label>Brand
+        <input type="text" name="brand" value="<%=fluid.brand%>">
+    </label>
+    <label>Has potassium:
+        <input type="checkbox" name="potassium"
+        <% if (fluid.potassium) { %>
+            checked
+        <% } %>
+        >
+    </label>
+    <label>Has phosphate:
+        <input type="checkbox" name="phos"
+        <% if (fluid.potassium) { %>
+            checked
+        <% } %>
+        >
+    </label>
+    <button type="submit">Update Fluid</button>
+</form>
+
+<%- include("../partials/footer") %>
