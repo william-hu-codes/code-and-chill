@@ -4,7 +4,9 @@ module.exports = {
     index,
     new: addFluid,
     create,
-    test
+    test,
+    test2,
+    test3
 }
 
 async function index (req, res, next) {
@@ -40,11 +42,14 @@ async function create(req, res, next) {
     }
 }
 
-<<<<<<< HEAD
 function test (req, res) {
-    console.log(test)
-=======
-function test2 (req, res, next) {
+    console.log("test")
+}
+
+function test2 (req, res) {
     console.log("test2")
->>>>>>> 4ff756e3475a5503506a8240ab06f0df61c14848
+}
+
+function test3 (req, res, next) {
+    console.log("test3")
 }
