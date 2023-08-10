@@ -6,7 +6,8 @@ module.exports = {
     create,
     test,
     test2,
-    test3
+    test3,
+    test4
 }
 
 async function index (req, res, next) {
