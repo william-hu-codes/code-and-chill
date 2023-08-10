@@ -5,7 +5,8 @@ module.exports = {
     new: addFluid,
     create,
     edit,
-    update
+    update,
+    delete: deleteFluid
 }
 
 async function index (req, res, next) {
@@ -41,6 +42,7 @@ async function create(req, res, next) {
     }
 }
 
+
 async function edit(req, res, next) {
     try {
         const fluidId = req.params.id
@@ -68,11 +70,24 @@ async function update(req, res, next) {
         await originalData.updateOne({phos: newData.phos})
         await originalData.save()
         // res.send(newData)
-        // res.redirect(`/fluids/${req.params.id}`)
         res.redirect(`/fluids/`)
     }catch(err) {
         console.log(err)
         next(Error(err))
     }
+}
 
+async function deleteFluid (req, res) {
+    try {
+
+        console.log("here is what we will delete ", (req.params.id))
+
+        await Fluid.findByIdAndDelete(req.params.id)
+
+        res.redirect('/fluids');
+
+    }catch(err) {
+        console.log(err)
+        next(Error(err))
+    }
 }
