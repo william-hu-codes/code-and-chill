@@ -17,4 +17,6 @@ router.get("/:id/edit", fluidsCtrl.edit)
 
 router.put("/:id", fluidsCtrl.update)
 
+router.get("/show", fluidsCtrl.show)
+
 module.exports = router;

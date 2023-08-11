@@ -1,0 +1,449 @@
+
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    height: auto;
+}
+
+p {
+    margin-right: 10px;
+    margin-bottom: 5px;
+    margin-top: 18px;
+}
+
+.title {
+    font-size: 25px;
+    font-weight: bold;
+    color: navy;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+body {
+    margin: 0px;
+    border: 10px solid blue;
+    height: 100vh;
+    width: auto;
+}
+
+h1 {
+    font-size: 20px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+h2 {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-right: 5px;
+    padding: 0px;
+}
+
+h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 0px;
+}
+
+h4 {
+    font-size: 15px;
+    font-weight: lighter;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+h5 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.outermost-container {
+    height: auto;
+}
+
+.main-container {
+    margin: 10px;
+    display: grid;
+    height: auto;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    grid-template-areas:
+        "side-button-container central-container central-container central-container central-container central-container central-container central-container"
+        "side-button-container central-container central-container central-container central-container central-container central-container central-container"
+        "side-button-container central-container central-container central-container central-container central-container central-container central-container"
+        "side-button-container central-container central-container central-container central-container central-container central-container central-container"
+        "side-button-container central-container central-container central-container central-container central-container central-container central-container"
+        "side-button-container lower-button-container lower-button-container lower-button-container lower-button-container lower-button-container lower-button-container lower-button-container";
+}
+
+.side-button-container {
+    grid-area: side-button-container;
+    border: .05px solid green;
+    background-color: rgb(189, 200, 217);
+    padding: 5px;
+}
+
+.lower-button-container {
+    grid-area: lower-button-container;
+    display: flex;
+    justify-content: space-evenly;
+    border: .05px solid rgb(39, 26, 159);
+    background-color: rgb(131, 124, 136);
+    column-gap: 20px;
+}
+
+.central-container {
+    grid-area: central-container;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(226, 231, 226);
+}
+    
+.data-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    border: .05px solid rgb(62, 15, 162);
+}
+
+.virtual-patient-container {
+    display: grid;
+    flex-grow: 2;
+    box-sizing: border-box;
+    height: auto;
+    border: .05px solid green;
+    background-color: rgb(194, 194, 194);
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    grid-template-areas: "crrt-patient-container"
+    /* keeping this a grid in anticipation of version 2.0, which will have multiple animated graphics of the patient, CRRT machine, ventilator, etc that will change in accordance with the clinical data during game intervals */
+}
+
+.crrt-patient-container {
+    grid-area: crrt-patient-container;
+    height: 100%;
+    align-items: center;
+}
+
+.iframe-container {
+    display: flex;
+}
+
+#iframe {
+    width: 100%;
+    display: flex;
+    padding: 10px 0px 10px 0px;
+    margin-left: auto;
+    margin-right: auto
+}
+
+#replacement-fluid-rate-radio {
+    margin: 10px;
+    display: flex;
+    flex-flow: column wrap;
+    border-color: black;
+}
+
+.update-order-button {
+    visibility: hidden;
+    cursor: pointer;
+    height: 25px;
+    max-width: 200px;
+    margin-top: 2px;
+    background-color: rgb(171, 171, 198);
+    color: rgb(33, 32, 32);
+    text-align: center;
+    display: inline-block;
+    font-size: 15px;
+    border-radius: 10px;
+}
+
+#replacement-fluid-type {
+    margin: 10px;
+    display: flex;
+    flex-flow: row;
+    border-color: black;
+}
+
+#blood-flow-rate-field {
+    margin: 10px;
+    display: flex;
+    flex-flow: row;
+    border-color: black;
+}
+
+#blow-flow-rate {
+    padding: 5px;
+}
+
+#replacement-fluid-type-radio {
+    margin: 2px;
+    flex-flow: column;
+    border-color: black;
+    max-width: fit-content;
+}
+
+#replacement-fluid-rate {
+    padding: 10px;
+    visibility: hidden;
+}
+
+#RFT-buttons-container {
+    display: flex;
+    flex-flow: column;
+    max-width: fit-content;
+}
+
+#RFT-buttons-container > button {
+    cursor: pointer;
+    height: 30px;
+    margin: 2px;
+    background-color: rgb(171, 171, 198);
+    color: rgb(33, 32, 32);
+    text-align: center;
+    display: inline-block;
+    font-size: 13px;
+    border-radius: 10px;
+}
+
+#RFT-buttons-container > button[disabled="true"] {
+    background-color: lightblue;
+    cursor: not-allowed;
+} 
+
+.disappearing-container-radio-buttons {
+   visibility: hidden;
+}
+
+input {
+    margin: 0.4rem;
+}
+
+.start-button-container {
+    display: flex;
+    align-items: center;
+}
+
+.start {
+    height: 60px;
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: rgb(26, 26, 143);
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 15px;
+}
+
+.start:hover {
+    background-color: rgb(44, 44, 126);
+    cursor: pointer;
+}
+
+.start[disabled="true"] {
+    background-color: lightblue;
+    cursor: not-allowed;
+} 
+
+.instructions-button-container {
+    display: flex;
+    align-items: center;
+}
+
+.open-instructions {
+    height: 60px;
+    width: 120px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: rgb(91, 101, 94);
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 15px;
+}
+
+.open-instructions:hover {
+    background-color: rgb(96, 136, 119);
+    cursor: pointer;
+}
+
+.timer-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    text-align: center;
+    padding-left: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin: 5px;
+    border: .05px solid rgb(23, 25, 28);
+}
+
+.modal-start-page {
+    display: block; 
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 50px; 
+    padding-right: 20px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%; 
+    overflow: visible; 
+    background-color: rgba(0,0,0,0.4); 
+}
+  
+.modal-start-page-content {
+    visibility: visible;
+    background-color: rgba(236, 251, 231, 0.95); 
+    margin: 10px;
+    margin-left: 40px;
+    padding: 10px;
+    border: 1px solid #888;
+    width: 95%;
+    height: auto;
+}
+
+.button-begin-modal {
+    cursor: pointer;
+    height: 30px;
+    margin: 4px;
+    background-color: rgb(171, 171, 198);
+    color: rgb(33, 32, 32);
+    text-align: center;
+    display: inline-block;
+    font-size: 15px;
+    border-radius: 10px;
+}
+  
+.button-begin-modal:hover {
+    background-color: rgb(240, 240, 250);
+    cursor: pointer;
+}
+
+.modal-instructions {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 100px; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); 
+}
+  
+
+.modal-instructions-content {
+    visibility: visible;
+    background-color: rgba(236, 251, 231, 0.9); 
+    margin: 10px;
+    margin-left: 40px;
+    padding: 10px;
+    border: 1px solid #888;
+    width: 95%;
+    height: auto;
+}
+
+.button-close-instructions-modal {
+    cursor: pointer;
+    height: 30px;
+    margin: 4px;
+    background-color: rgb(171, 171, 198);
+    color: rgb(33, 32, 32);
+    text-align: center;
+    display: inline-block;
+    font-size: 15px;
+    border-radius: 10px;
+}
+  
+.button-close-instructions-modal:hover {
+    background-color: rgb(240, 240, 250);
+    cursor: pointer;
+} 
+
+.modal-game-over {
+    display: none;
+    position: fixed; 
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.8);
+}
+  
+.modal-game-over-content {
+    visibility: visible;
+    background-color: #dbe4f7;
+    margin: 10px;
+    margin-left: 40px;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 95%;
+    height: auto;
+}
+
+.button-refresh-page {
+    cursor: pointer;
+    height: 30px;
+    margin: 4px;
+    background-color: rgb(171, 171, 198);
+    color: rgb(33, 32, 32);
+    text-align: center;
+    display: inline-block;
+    font-size: 15px;
+    border-radius: 10px;
+}
+  
+.button-refresh-page:hover {
+    background-color: rgb(240, 240, 250);
+    cursor: pointer;
+}
+
+#ultrafiltration-rate-field {
+    margin: 10px;
+    display: flex;
+    flex-flow: column wrap;
+    border-color: black;
+}
+
+#myUfRange {
+    max-width: 350px;
+    margin-top: 5px;
+}
+
+.slider-ultrafiltration-rate-container {
+    display: inline;
+    padding: 5px;
+}
+
+.slider-ultrafiltration-rate {
+    padding-bottom: 5px;
+}
+
+.slider-ultrafiltration-rate-4hr {
+    padding-top: 5px;
+}
+

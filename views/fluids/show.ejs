@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRRT Virtual Patient Simulation</title>
+
+ 
+    <style>
+
+
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    height: auto;
+}
+
+p {
+    margin-right: 10px;
+    margin-bottom: 5px;
+    margin-top: 18px;
+}
+
+.title {
+    font-size: 25px;
+    font-weight: bold;
+    color: navy;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+body {
+    margin: 0px;
+    border: 10px solid blue;
+    height: 100vh;
+    width: auto;
+}
+
+h1 {
+    font-size: 20px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+h2 {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-right: 5px;
+    padding: 0px;
+}
+
+h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 0px;
+}
+
+h4 {
+    font-size: 15px;
+    font-weight: lighter;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+h5 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.outermost-container {
+    height: auto;
+}
+
+.main-container {
+    margin: 10px;
+    display: grid;
+    height: auto;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    grid-template-areas:
+        "side-button-container central-container central-container central-container central-container central-container central-container central-container"
+        "side-button-container central-container central-container central-container central-container central-container central-container central-container"
+        "side-button-container central-container central-container central-container central-container central-container central-container central-container"
+        "side-button-container central-container central-container central-container central-container central-container central-container central-container"
+        "side-button-container central-container central-container central-container central-container central-container central-container central-container"
+        "side-button-container lower-button-container lower-button-container lower-button-container lower-button-container lower-button-container lower-button-container lower-button-container";
+}
+
+.side-button-container {
+    grid-area: side-button-container;
+    border: .05px solid green;
+    background-color: rgb(189, 200, 217);
+    padding: 5px;
+}
+
+.lower-button-container {
+    grid-area: lower-button-container;
+    display: flex;
+    justify-content: space-evenly;
+    border: .05px solid rgb(39, 26, 159);
+    background-color: rgb(131, 124, 136);
+    column-gap: 20px;
+}
+
+.central-container {
+    grid-area: central-container;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(226, 231, 226);
+}
+    
+.data-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    border: .05px solid rgb(62, 15, 162);
+}
+
+.virtual-patient-container {
+    display: grid;
+    flex-grow: 2;
+    box-sizing: border-box;
+    height: auto;
+    border: .05px solid green;
+    background-color: rgb(194, 194, 194);
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    grid-template-areas: "crrt-patient-container"
+    /* keeping this a grid in anticipation of version 2.0, which will have multiple animated graphics of the patient, CRRT machine, ventilator, etc that will change in accordance with the clinical data during game intervals */
+}
+
+.crrt-patient-container {
+    grid-area: crrt-patient-container;
+    height: 100%;
+    align-items: center;
+}
+
+.iframe-container {
+    display: flex;
+}
+
+#iframe {
+    width: 100%;
+    display: flex;
+    padding: 10px 0px 10px 0px;
+    margin-left: auto;
+    margin-right: auto
+}
+
+#replacement-fluid-rate-radio {
+    margin: 10px;
+    display: flex;
+    flex-flow: column wrap;
+    border-color: black;
+}
+
+.update-order-button {
+    visibility: hidden;
+    cursor: pointer;
+    height: 25px;
+    max-width: 200px;
+    margin-top: 2px;
+    background-color: rgb(171, 171, 198);
+    color: rgb(33, 32, 32);
+    text-align: center;
+    display: inline-block;
+    font-size: 15px;
+    border-radius: 10px;
+}
+
+#replacement-fluid-type {
+    margin: 10px;
+    display: flex;
+    flex-flow: row;
+    border-color: black;
+}
+
+#blood-flow-rate-field {
+    margin: 10px;
+    display: flex;
+    flex-flow: row;
+    border-color: black;
+}
+
+#blow-flow-rate {
+    padding: 5px;
+}
+
+#replacement-fluid-type-radio {
+    margin: 2px;
+    flex-flow: column;
+    border-color: black;
+    max-width: fit-content;
+}
+
+#replacement-fluid-rate {
+    padding: 10px;
+    visibility: hidden;
+}
+
+#RFT-buttons-container {
+    display: flex;
+    flex-flow: column;
+    max-width: fit-content;
+}
+
+#RFT-buttons-container > button {
+    cursor: pointer;
+    height: 30px;
+    margin: 2px;
+    background-color: rgb(171, 171, 198);
+    color: rgb(33, 32, 32);
+    text-align: center;
+    display: inline-block;
+    font-size: 13px;
+    border-radius: 10px;
+}
+
+#RFT-buttons-container > button[disabled="true"] {
+    background-color: lightblue;
+    cursor: not-allowed;
+} 
+
+.disappearing-container-radio-buttons {
+   visibility: hidden;
+}
+
+input {
+    margin: 0.4rem;
+}
+
+.start-button-container {
+    display: flex;
+    align-items: center;
+}
+
+.start {
+    height: 60px;
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: rgb(26, 26, 143);
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 15px;
+}
+
+.start:hover {
+    background-color: rgb(44, 44, 126);
+    cursor: pointer;
+}
+
+.start[disabled="true"] {
+    background-color: lightblue;
+    cursor: not-allowed;
+} 
+
+.instructions-button-container {
+    display: flex;
+    align-items: center;
+}
+
+.open-instructions {
+    height: 60px;
+    width: 120px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: rgb(91, 101, 94);
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 15px;
+}
+
+.open-instructions:hover {
+    background-color: rgb(96, 136, 119);
+    cursor: pointer;
+}
+
+.timer-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    text-align: center;
+    padding-left: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin: 5px;
+    border: .05px solid rgb(23, 25, 28);
+}
+
+.modal-start-page {
+    display: block; 
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 50px; 
+    padding-right: 20px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%; 
+    overflow: visible; 
+    background-color: rgba(0,0,0,0.4); 
+}
+  
+.modal-start-page-content {
+    visibility: visible;
+    background-color: rgba(236, 251, 231, 0.95); 
+    margin: 10px;
+    margin-left: 40px;
+    padding: 10px;
+    border: 1px solid #888;
+    width: 95%;
+    height: auto;
+}
+
+.button-begin-modal {
+    cursor: pointer;
+    height: 30px;
+    margin: 4px;
+    background-color: rgb(171, 171, 198);
+    color: rgb(33, 32, 32);
+    text-align: center;
+    display: inline-block;
+    font-size: 15px;
+    border-radius: 10px;
+}
+  
+.button-begin-modal:hover {
+    background-color: rgb(240, 240, 250);
+    cursor: pointer;
+}
+
+.modal-instructions {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 100px; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); 
+}
+  
+
+.modal-instructions-content {
+    visibility: visible;
+    background-color: rgba(236, 251, 231, 0.9); 
+    margin: 10px;
+    margin-left: 40px;
+    padding: 10px;
+    border: 1px solid #888;
+    width: 95%;
+    height: auto;
+}
+
+.button-close-instructions-modal {
+    cursor: pointer;
+    height: 30px;
+    margin: 4px;
+    background-color: rgb(171, 171, 198);
+    color: rgb(33, 32, 32);
+    text-align: center;
+    display: inline-block;
+    font-size: 15px;
+    border-radius: 10px;
+}
+  
+.button-close-instructions-modal:hover {
+    background-color: rgb(240, 240, 250);
+    cursor: pointer;
+} 
+
+.modal-game-over {
+    display: none;
+    position: fixed; 
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.8);
+}
+  
+.modal-game-over-content {
+    visibility: visible;
+    background-color: #dbe4f7;
+    margin: 10px;
+    margin-left: 40px;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 95%;
+    height: auto;
+}
+
+.button-refresh-page {
+    cursor: pointer;
+    height: 30px;
+    margin: 4px;
+    background-color: rgb(171, 171, 198);
+    color: rgb(33, 32, 32);
+    text-align: center;
+    display: inline-block;
+    font-size: 15px;
+    border-radius: 10px;
+}
+  
+.button-refresh-page:hover {
+    background-color: rgb(240, 240, 250);
+    cursor: pointer;
+}
+
+#ultrafiltration-rate-field {
+    margin: 10px;
+    display: flex;
+    flex-flow: column wrap;
+    border-color: black;
+}
+
+#myUfRange {
+    max-width: 350px;
+    margin-top: 5px;
+}
+
+.slider-ultrafiltration-rate-container {
+    display: inline;
+    padding: 5px;
+}
+
+.slider-ultrafiltration-rate {
+    padding-bottom: 5px;
+}
+
+.slider-ultrafiltration-rate-4hr {
+    padding-top: 5px;
+}
+
+
+
+
+
+
+    </style>
+
+
+
+
+    <script>
+        <% script %>
+    </script>
+
+
+</head>
+<body>
+    <header class="header">
+        <header class="title">CRRT Virtual Patient Simulator</header>
+        <p>Robert Hayden, MD&nbsp;&nbsp;&nbsp;&copy;&nbsp;&nbsp;2023</p>
+    </header>
+  <main class="outermost-container">
+    <div id="modal-start-page-id" class="modal-start-page">
+        <div class="modal-start-page-content">
+                <h5>&nbsp;</h5> 
+            <h1>Welcome to the CRRT Virtual Patient Simulator!</h1>
+                <h5>&nbsp;</h5>
+                <h5>&nbsp;</h5>
+            <h5>OBJECTIVE: optimize the CRRT (continuous renal replacement therapy) prescription to keep the patient alive over a "time period" of 24 hours.</h5>
+                <h5>&nbsp;</h5>
+            <h5>YOUR PATIENT: 55 year old man with pneumosepsis resulting in anuric acute kidney injury due to ischemic acute tubular necrosis. A right internal jugular temporary dialysis catheter has just been placed to start CRRT. The patient weighs 100kg.</h5>
+                <h5>&nbsp;</h5>
+            <h5>TIME PERIOD: the 24 hour time period is broken up into 4-hour intervals, each of which is 15 seconds in real time. </h5>
+                <h5>&nbsp;</h5>
+            <h5>INTERVALS: at each 4-hour interval, updated clinical data (pertinent lab values, balance of fluids in/out, pressor requirement, and ventilator F<small>I</small>O2) will appear. React accordingly and stabilize the patient by updating the CRRT prescription settings on the left. The prescription changes you make during a given interval will take effect upon transition into the following time interval.</h5>
+                <h5>&nbsp;</h5>
+            <h5>OUTCOME: you will succeed if the patient survives the 24-hour period. If the patient does not survive, you will receive specific feedback regarding the ways your CRRT prescription could have been optimized.</h5>
+                <h5>&nbsp;</h5>
+            <h5>TO BEGIN the simulation, you will have to click the button "Start Simulation"</h5>
+                <h5>&nbsp;</h5>
+            <h5>NOTE these instructions will be available to review again as needed by clicking "Review Instructions".</h5>
+                <h5>&nbsp;</h5>
+            <button class="button-begin-modal">Enter Simulation</button>
+                <h5>&nbsp;</h5>
+                <h5>&nbsp;</h5>
+        </div>
+    </div>
+    <div id="modal-game-over-id" class="modal-game-over">
+        <div class="modal-game-over-content">
+                <h5>&nbsp;</h5>
+            <h1>Game Over</h1>
+                <h5>&nbsp;</h5>
+                <h5>&nbsp;</h5>
+            <h3 id="feedback">Life or Death</h3>
+                <h5>&nbsp;</h5>
+                <h5>&nbsp;</h5>
+            <h4 id="specific-lethal-outcome"></h4>
+                <h5>&nbsp;</h5>
+                <h5>&nbsp;</h5>
+            <button class="button-refresh-page">Play Simulation Again</button>
+                <h5>&nbsp;</h5>
+        </div>
+    </div>
+    <div id="modal-instructions-id" class="modal-instructions">
+        <div class="modal-instructions-content">
+            <h1>Instructions</h1>
+                <h5>&nbsp;</h5>
+            <h5>OBJECTIVE: optimize the CRRT (continuous renal replacement therapy) prescription to keep the patient alive over a "time period" of 24 hours.</h5>
+                <h5>&nbsp;</h5>
+            <h5>YOUR PATIENT: 55 year old man with pneumosepsis resulting in anuric acute kidney injury due to ischemic acute tubular necrosis. A right internal jugular temporary dialysis catheter has just been placed to start CRRT. The patient weighs 100kg.</h5>
+                <h5>&nbsp;</h5>
+            <h5>TIME PERIOD: the 24 hour time period is broken up into 4-hour intervals, each of which is 15 seconds in real time. </h5>
+                <h5>&nbsp;</h5>
+            <h5>INTERVALS: at each 4-hour interval, updated clinical data (pertinent lab values, balance of fluids in/out, pressor requirement, and ventilator F<small>I</small>O2) will appear. React accordingly and stabilize the patient by updating the CRRT prescription settings on the left. The prescription changes you make during a given interval will take effect upon transition into the following time interval.</h5>
+                <h5>&nbsp;</h5>
+            <h5>OUTCOME: you will succeed if the patient survives the 24-hour period. If the patient does not survive, you will receive specific feedback regarding the ways your CRRT prescription could have been optimized.</h5>
+                <h5>&nbsp;</h5>
+            <h5>TO BEGIN the simulation, you will have to click the button "Start Simulation"</h5>
+                <h5>&nbsp;</h5>
+                <h5>&nbsp;</h5>
+            <button class="button-close-instructions-modal">Return to Simulation</button>
+                <h5>&nbsp;</h5>
+        </div>
+    </div>
+    <main class="main-container">
+        <section class="central-container">
+            <section class="data-container">
+                    <div class="data-labels-container">
+                        <h3>Time Interval</h3>
+                        <h4>Potassium</h4>
+                        <h4>Phosphorus</h4>
+                        <h4>4hr Fluid Intake (cc)</h4>
+                        <h4>4hr Ultrafiltration (cc)</h4>
+                        <h4>4hr Net Fluid Balance (cc)</h4>
+                        <h4>Vasopressors (#)</h4>
+                        <h4>Vent. F<small>I</small>O2</h4>
+                    </div>
+                    <div class="0hr-container">
+                        <h3>0hr</h3>
+                        <h4 class="potassium1">_</h4>
+                        <h4 class="phos1">_</h4>
+                        <h4 class="in1">_</h4>
+                        <h4 class="out1">_</h4>
+                        <h4 class="net1">_</h4>
+                        <h4 class="vaso1">_</h4>
+                        <h4 class="fio21">_</h4>
+                    </div>
+                    <div class="4hr-container">
+                        <h3>4hr</h3>
+                        <h4 class="potassium2">_</h4>
+                        <h4 class="phos2">_</h4>
+                        <h4 class="in2">_</h4>
+                        <h4 class="out2">_</h4>
+                        <h4 class="net2">_</h4>
+                        <h4 class="vaso2">_</h4>
+                        <h4 class="fio22">_</h4>
+                    </div>
+                    <div class="8hr-container">
+                        <h3>8hr</h3>
+                        <h4 class="potassium3">_</h4>
+                        <h4 class="phos3">_</h4>
+                        <h4 class="in3">_</h4>
+                        <h4 class="out3">_</h4>
+                        <h4 class="net3">_</h4>
+                        <h4 class="vaso3">_</h4>
+                        <h4 class="fio23">_</h4>
+                    </div>
+                    <div class="12hr-container">
+                        <h3>12hr</h3>
+                        <h4 class="potassium4">_</h4>
+                        <h4 class="phos4">_</h4>
+                        <h4 class="in4">_</h4>
+                        <h4 class="out4">_</h4>
+                        <h4 class="net4">_</h4>
+                        <h4 class="vaso4">_</h4>
+                        <h4 class="fio24">_</h4>
+                    </div>
+                    <div class="16hr-container">
+                        <h3>16hr</h3>
+                        <h4 class="potassium5">_</h4>
+                        <h4 class="phos5">_</h4>
+                        <h4 class="in5">_</h4>
+                        <h4 class="out5">_</h4>
+                        <h4 class="net5">_</h4>
+                        <h4 class="vaso5">_</h4>
+                        <h4 class="fio25">_</h4>
+                    </div>
+                    <div class="20hr-container">
+                        <h3>20hr</h3>
+                        <h4 class="potassium6">_</h4>
+                        <h4 class="phos6">_</h4>
+                        <h4 class="in6">_</h4>
+                        <h4 class="out6">_</h4>
+                        <h4 class="net6">_</h4>
+                        <h4 class="vaso6">_</h4>
+                        <h4 class="fio26">_</h4>
+                    </div> 
+            </section>
+            <section class="virtual-patient-container">
+                    <div class="iframe-container">
+                        <iframe id="iframe"  src="https://renalprimers.com/crrt.html"></iframe>
+                    </div>
+            </section>
+        </section>
+        <section class="side-button-container">
+          <h3>Prescription Settings</h3>
+            <fieldset id="blood-flow-rate-field">
+                <legend>Blood Flow Rate</legend>
+                <div id="blow-flow-rate">250 mL/min</div>
+            </fieldset>
+            <fieldset id="replacement-fluid-type">
+                <legend>Select Replacement Fluid Type</legend>
+                <section id="RFT-buttons-container">
+                    <button class="button-Prismasol-0K" type="button">Prismasol 0K, 2.5Ca, 0Phos</button>
+                    <button class="button-Prismasol-4K" type="button">Prismasol 4K, 2.5Ca, 0Phos</button>
+                    <button class="button-Phoxillum" type="button">Phoxillum 4K, 2.5Ca, 1Phos</button>
+                </section>
+            </fieldset>
+            <fieldset id="replacement-fluid-rate-radio">
+                <legend>Select Replacement Fluid Rate</legend>
+                  <div class="disappearing-container-radio-buttons">
+                    <div>
+                        <input type="radio" id="0RFR" name="RFR" value ="0">
+                        <label for="0RFR">0 cc/hr</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="1600RFR" name="RFR" value ="1600">
+                        <label for="1600RFR">1600 cc/hr</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="2400RFR" name="RFR" value ="2400">
+                        <label for="2400RFR">2400 cc/hr</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="3200RFR" name="RFR" value ="3200">
+                        <label for="3200RFR">3200 cc/hr</label>
+                    </div>
+                  </div>
+                <div id="replacement-fluid-rate"><strong>NOTE:</strong> must click "Update Order" to set rate</div>
+                <button class="update-order-button" type="button">Update Order</button>
+            </fieldset>
+            <fieldset id="ultrafiltration-rate-field">
+                <legend>Set Ultrafiltration Rate (cc/hr)</legend>
+                <input type="range" id="myUfRange" value="0">
+                <div class="slider-ultrafiltration-rate-container">
+                    <div class="slider-ultrafiltration-rate">Rate / Hour: (cc/hr): 0</div>
+                    <div class="slider-ultrafiltration-rate-4hr">Rate / 4 Hours (cc/4hrs): 0</div>
+                 </div>
+            </fieldset>
+        </section>
+        <section class="lower-button-container">
+            <div class="start-button-container">
+                <button class="start">Start Simulation</button>
+            </div>
+            <div class="instructions-button-container">
+                <button class="open-instructions">Review Instructions</button>
+            </div>
+            <div class="timer-container">
+                <h2>Countdown Until <br> Next Interval</h2>
+                <h1 id="timerDisplay">-</h1>
+            </div>
+            <div class="timer-container">
+                <h2>Current Time <br> Interval <br> </h2>
+                <h1 id="cyclesDisplay">0hr</h1>
+            </div>
+        </section>
+    </main>
+  </main>
+</body>
+</html>

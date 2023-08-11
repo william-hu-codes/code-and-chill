@@ -1,4 +1,5 @@
 const Fluid = require('../models/fluid')
+const Script = require('../models/script')
 
 module.exports = {
     index,
@@ -6,7 +7,8 @@ module.exports = {
     create,
     edit,
     update,
-    delete: deleteFluid
+    delete: deleteFluid,
+    show
 }
 
 async function index (req, res, next) {
@@ -91,3 +93,18 @@ async function deleteFluid (req, res) {
         next(Error(err))
     }
 }
+
+function show (req, res, next) {
+
+       res.render("fluids/show")
+
+    }
+
+function show(req, res) {
+
+        const contextObject = {
+            script: Script.script
+        }
+    
+        res.render('fluids/show', contextObject)
+    }
